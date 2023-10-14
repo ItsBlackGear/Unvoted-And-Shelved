@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "examplemod",
+  "id": "unvotedandshelved",
   "version": "${version}",
-  "name": "Example Mod",
+  "name": "Unvoted and Shelved",
   "description": "This is an example description! Tell everyone what your mod is about!",
   "authors": [
     "Me!"
@@ -12,16 +12,16 @@
     "sources": "https://github.com/FabricMC/fabric-example-mod"
   },
   "license": "Insert License Here",
-  "icon": "assets/examplemod/icon.png",
+  "icon": "assets/unvotedandshelved/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.groupid.examplemod.core.fabric.ExampleModFabric"
+      "com.cursedcauldron.unvotedandshelved.core.fabric.UnvotedAndShelvedFabric"
     ]
   },
   "mixins": [
-    "examplemod.mixins.json",
-    "examplemod-common.mixins.json"
+    "unvotedandshelved.mixins.json",
+    "unvotedandshelved-common.mixins.json"
   ],
   "depends": {
     "fabric": "*",

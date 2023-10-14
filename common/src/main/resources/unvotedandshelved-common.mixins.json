@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "com.cursedcauldron.unvotedandshelved.core.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+  ],
+  "mixins": [
+    "BlockEntityTypeMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
