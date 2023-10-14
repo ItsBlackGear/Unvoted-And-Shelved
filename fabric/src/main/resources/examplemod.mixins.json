@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "com.groupid.examplemod.core.mixin.fabric",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "SheetsMixin"
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
