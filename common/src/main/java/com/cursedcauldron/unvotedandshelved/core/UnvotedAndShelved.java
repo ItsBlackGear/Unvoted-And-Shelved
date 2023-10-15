@@ -2,6 +2,7 @@ package com.cursedcauldron.unvotedandshelved.core;
 
 import com.cursedcauldron.unvotedandshelved.client.ClientSetup;
 import com.cursedcauldron.unvotedandshelved.common.CommonSetup;
+import com.cursedcauldron.unvotedandshelved.common.registries.USItems;
 import com.cursedcauldron.unvotedandshelved.common.registries.USSoundEvents;
 import com.cursedcauldron.unvotedandshelved.common.registries.entity.*;
 import com.cursedcauldron.unvotedandshelved.core.platform.ModInstance;
@@ -15,6 +16,8 @@ public class UnvotedAndShelved {
 
     public static void bootstrap() {
         INSTANCE.bootstrap();
+
+        USItems.ITEMS.register();
 
         USDataSerializers.bootstrap();
 
