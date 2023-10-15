@@ -337,4 +337,9 @@ public class CopperGolem extends AbstractGolem {
             this.setWeatherState(WeatherState.values()[this.getWeatherState().ordinal() - 1]);
         }
     }
+
+    @Override
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.75F;
+    }
 }

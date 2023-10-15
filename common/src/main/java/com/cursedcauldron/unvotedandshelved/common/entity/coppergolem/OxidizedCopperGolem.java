@@ -140,6 +140,13 @@ public class OxidizedCopperGolem extends AbstractGolem {
         }
     }
 
+    private void showBreakingParticles() {
+        if (this.level instanceof ServerLevel server) {
+            ParticleOptions particle = new BlockParticleOption(ParticleTypes.BLOCK, Blocks.OXIDIZED_COPPER.defaultBlockState());
+            server.sendParticles(particle, this.getX(), this.getY(0.6F), this.getZ(), 10, this.getBbWidth() / 4.0F, this.getBbHeight() / 4.0F, this.getBbWidth() / 4.0F, 0.05);
+        }
+    }
+
     // ========== SOUNDS ===============================================================================================
 
     @Override
@@ -222,6 +229,7 @@ public class OxidizedCopperGolem extends AbstractGolem {
             return InteractionResult.SUCCESS;
         }
 
+        // If no specific conditions are met, proceed as normal.
         return super.mobInteract(player, hand);
     }
 
@@ -324,13 +332,6 @@ public class OxidizedCopperGolem extends AbstractGolem {
         return distance < dist * dist;
     }
 
-    private void showBreakingParticles() {
-        if (this.level instanceof ServerLevel server) {
-            ParticleOptions particle = new BlockParticleOption(ParticleTypes.BLOCK, Blocks.OXIDIZED_COPPER.defaultBlockState());
-            server.sendParticles(particle, this.getX(), this.getY(0.6F), this.getZ(), 10, this.getBbWidth() / 4.0F, this.getBbHeight() / 4.0F, this.getBbWidth() / 4.0F, 0.05);
-        }
-    }
-
     private void causeDamage(DamageSource source, float amount) {
         float health = this.getHealth();
         health -= amount;
@@ -386,5 +387,10 @@ public class OxidizedCopperGolem extends AbstractGolem {
         if (!this.isWaxed()) {
             this.convertTo(USEntities.COPPER_GOLEM.get(), true);
         }
+    }
+
+    @Override
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.75F;
     }
 }
