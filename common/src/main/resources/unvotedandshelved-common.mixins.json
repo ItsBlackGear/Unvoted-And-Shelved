@@ -5,7 +5,9 @@
   "client": [
   ],
   "mixins": [
-    "BlockEntityTypeMixin"
+    "BlockEntityTypeMixin",
+    "PoseMixin",
+    "access.ActivityAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
