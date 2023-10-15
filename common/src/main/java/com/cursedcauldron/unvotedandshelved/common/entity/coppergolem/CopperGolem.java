@@ -54,7 +54,6 @@ public class CopperGolem extends AbstractGolem {
 
     public CopperGolem(EntityType<? extends AbstractGolem> entityType, Level level) {
         super(entityType, level);
-        this.maxUpStep = 1.0F;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -202,6 +201,32 @@ public class CopperGolem extends AbstractGolem {
         }
     }
 
+    // ========== SOUNDS ===============================================================================================
+
+    @Nullable @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return USSoundEvents.COPPER_GOLEM_HIT.get();
+    }
+
+    @Nullable @Override
+    protected SoundEvent getDeathSound() {
+        return USSoundEvents.COPPER_GOLEM_DEATH.get();
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, BlockState state) {
+        this.playSound(USSoundEvents.COPPER_GOLEM_WALK.get(), 0.5F, 1.0F);
+    }
+
+    public SoundEvent getHeadSpinSound() {
+        return switch (this.getWeatherState()) {
+            case UNAFFECTED -> USSoundEvents.HEAD_SPIN.get();
+            case EXPOSED -> USSoundEvents.HEAD_SPIN_SLOWER.get();
+            case WEATHERED -> USSoundEvents.HEAD_SPIN_SLOWEST.get();
+            case OXIDIZED -> null;
+        };
+    }
+
     // ========== BEHAVIOR =============================================================================================
 
     @Override
@@ -270,7 +295,6 @@ public class CopperGolem extends AbstractGolem {
             this.gameEvent(GameEvent.ENTITY_INTERACT, this);
 
             return InteractionResult.SUCCESS;
-
         }
 
         // Check if the player is using an Axe
@@ -286,14 +310,14 @@ public class CopperGolem extends AbstractGolem {
                 stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
             } else {
                 if (this.getWeatherState() != WeatherState.UNAFFECTED) {
-                    // Reduce the durability of the axe
-                    stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
-
                     // Shift the copper golem state backwards and spawn particles
                     this.setWeatherState(WeatherState.values()[this.getWeatherState().ordinal() - 1]);
                     this.playSound(SoundEvents.AXE_SCRAPE, 1.0F, 1.0F);
                     this.level.levelEvent(player, 3005, this.blockPosition(), 0);
                     this.gameEvent(GameEvent.ENTITY_INTERACT, this);
+
+                    // Reduce the durability of the axe
+                    stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
                 } else {
                     // If the copper golem cannot be scrapped, skip the interaction
                     return InteractionResult.PASS;
@@ -312,20 +336,5 @@ public class CopperGolem extends AbstractGolem {
         if (this.getWeatherState() != WeatherState.UNAFFECTED && !this.isWaxed()) {
             this.setWeatherState(WeatherState.values()[this.getWeatherState().ordinal() - 1]);
         }
-    }
-
-    @Nullable @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
-        return USSoundEvents.COPPER_GOLEM_HIT.get();
-    }
-
-    @Nullable @Override
-    protected SoundEvent getDeathSound() {
-        return USSoundEvents.COPPER_GOLEM_DEATH.get();
-    }
-
-    @Override
-    protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(USSoundEvents.COPPER_GOLEM_WALK.get(), 0.5F, 1.0F);
     }
 }

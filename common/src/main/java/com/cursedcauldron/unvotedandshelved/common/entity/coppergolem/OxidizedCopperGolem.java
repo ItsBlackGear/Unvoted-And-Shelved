@@ -1,9 +1,14 @@
 package com.cursedcauldron.unvotedandshelved.common.entity.coppergolem;
 
+import com.cursedcauldron.unvotedandshelved.common.registries.USItems;
 import com.cursedcauldron.unvotedandshelved.common.registries.entity.USEntities;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -19,6 +24,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -32,22 +38,44 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 public class OxidizedCopperGolem extends AbstractGolem {
+    // ENTITY DATA
+    public static final EntityDataAccessor<Boolean> DATA_IS_WAXED = SynchedEntityData.defineId(OxidizedCopperGolem.class, EntityDataSerializers.BOOLEAN);
+
+    // ENTITY PREDICATES
     private static final Predicate<Entity> RIDEABLE_MINECARTS = entity -> entity instanceof AbstractMinecart cart && cart.getMinecartType() == AbstractMinecart.Type.RIDEABLE;
 
+    // ENTITY EVENTS
     public static final byte SPAWN_SPARK_PARTICLES = 14;
     public static final byte SPAWN_DESTROY_PARTICLES = 32;
 
+    // VARIABLES
     public long lastHit;
 
     public OxidizedCopperGolem(EntityType<? extends AbstractGolem> entityType, Level level) {
         super(entityType, level);
-        this.maxUpStep = 0.0F;
     }
 
+    public static AttributeSupplier.Builder createAttributes() {
+        return Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 30.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.0D)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
+    }
+
+    // ========== DATA CONTROL =========================================================================================
+
     @Override
-    public void refreshDimensions() {
-        super.refreshDimensions();
-        this.setPos(this.getX(), this.getY(), this.getZ());
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_IS_WAXED, false);
+    }
+
+    public void setWaxed(boolean waxed) {
+        this.entityData.set(DATA_IS_WAXED, waxed);
+    }
+
+    public boolean isWaxed() {
+        return this.entityData.get(DATA_IS_WAXED);
     }
 
     @Override
@@ -61,6 +89,87 @@ public class OxidizedCopperGolem extends AbstractGolem {
     }
 
     @Override
+    public boolean isAffectedByPotions() {
+        return false;
+    }
+
+    @Override
+    public boolean attackable() {
+        return false;
+    }
+
+    @Override
+    public ItemStack getPickResult() {
+        return new ItemStack(USItems.OXIDIZED_COPPER_GOLEM.get());
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean("Waxed", this.isWaxed());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.setWaxed(tag.getBoolean("Waxed"));
+    }
+
+    // ========== PARTICLES ============================================================================================
+
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == SPAWN_DESTROY_PARTICLES) {
+            if (this.level.isClientSide) {
+                this.playSound(SoundEvents.COPPER_HIT, 0.3F, 1.0F);
+                this.lastHit = this.level.getGameTime();
+            }
+        } else if (id == SPAWN_SPARK_PARTICLES) {
+            CopperGolem.spawnParticlesAtRod(this.level, this);
+        } else {
+            super.handleEntityEvent(id);
+        }
+    }
+
+    @Override
+    protected void customServerAiStep() {
+        super.customServerAiStep();
+
+        if (this.level.isThundering() && this.level instanceof ServerLevel) {
+            this.level.broadcastEntityEvent(this, SPAWN_SPARK_PARTICLES);
+        }
+    }
+
+    // ========== SOUNDS ===============================================================================================
+
+    @Override
+    public LivingEntity.Fallsounds getFallSounds() {
+        return new LivingEntity.Fallsounds(SoundEvents.COPPER_FALL, SoundEvents.COPPER_FALL);
+    }
+
+    @Nullable @Override
+    protected SoundEvent getHurtSound(DamageSource damageSource) {
+        return SoundEvents.COPPER_HIT;
+    }
+
+    @Nullable @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.COPPER_BREAK;
+    }
+
+    private void playBrokenSound() {
+        this.playSound(SoundEvents.COPPER_BREAK, 1.0F, 1.0F);
+    }
+
+    // ========== BEHAVIOR =============================================================================================
+
+    @Override
+    public void refreshDimensions() {
+        super.refreshDimensions();
+        this.setPos(this.getX(), this.getY(), this.getZ());
+    }
+
+    @Override
     protected void pushEntities() {
         List<Entity> entities = this.level.getEntities(this, this.getBoundingBox(), RIDEABLE_MINECARTS);
         for (Entity entity : entities) {
@@ -71,19 +180,49 @@ public class OxidizedCopperGolem extends AbstractGolem {
     }
 
     @Override
-    public InteractionResult interactAt(Player player, Vec3 vec, InteractionHand hand) {
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (stack.getItem() instanceof AxeItem) {
-            this.convertTo(USEntities.COPPER_GOLEM.get(), true);
-            this.gameEvent(GameEvent.ENTITY_INTERACT, this);
-            this.playSound(SoundEvents.AXE_SCRAPE, 1.0F, 1.0F);
-            this.level.levelEvent(player, 3005, this.blockPosition(), 0);
 
-            stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+        // Check if the player is using honeycomb and if the copper golem is not waxed
+        if (stack.is(Items.HONEYCOMB) && !this.isWaxed()) {
+            if (!player.getAbilities().instabuild) {
+                stack.shrink(1); // Reduce the honeycomb amount
+            }
+
+            // Waxes the copper golem and spawn particles.
+            this.setWaxed(true);
+            this.level.levelEvent(player, 3003, this.blockPosition(), 0);
+            this.gameEvent(GameEvent.ENTITY_INTERACT, this);
+
             return InteractionResult.SUCCESS;
         }
 
-        return super.interactAt(player, vec, hand);
+        // Check if the player is using an Axe
+        if (stack.getItem() instanceof AxeItem) {
+            if (this.isWaxed()) {
+                // Remove the wax from the copper golem and spawn particles
+                this.setWaxed(false);
+                this.playSound(SoundEvents.AXE_WAX_OFF, 1.0F, 1.0F);
+                this.level.levelEvent(player, 3004, this.blockPosition(), 0);
+                this.gameEvent(GameEvent.ENTITY_INTERACT, this);
+
+                // Reduce the durability of the axe
+                stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+            } else {
+                // Convert the Copper Golem into their active variant and spawn particles
+                this.convertTo(USEntities.COPPER_GOLEM.get(), true);
+                this.gameEvent(GameEvent.ENTITY_INTERACT, this);
+                this.playSound(SoundEvents.AXE_SCRAPE, 1.0F, 1.0F);
+                this.level.levelEvent(player, 3005, this.blockPosition(), 0);
+
+                // Reduce the durability of the axe
+                stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+            }
+
+            return InteractionResult.SUCCESS;
+        }
+
+        return super.mobInteract(player, hand);
     }
 
     @Nullable @Override
@@ -163,7 +302,7 @@ public class OxidizedCopperGolem extends AbstractGolem {
                     this.gameEvent(GameEvent.ENTITY_DAMAGE, source.getEntity());
                     this.lastHit = gameTime;
                 } else {
-                    Block.popResource(this.level, this.blockPosition(), new ItemStack(Blocks.OXIDIZED_COPPER));
+                    Block.popResource(this.level, this.blockPosition(), new ItemStack(USItems.OXIDIZED_COPPER_GOLEM.get()));
                     this.playSound(SoundEvents.COPPER_BREAK, 1.0F, 1.0F);
                     this.showBreakingParticles();
                     this.kill();
@@ -175,37 +314,14 @@ public class OxidizedCopperGolem extends AbstractGolem {
     }
 
     @Override
-    public void handleEntityEvent(byte id) {
-        if (id == SPAWN_DESTROY_PARTICLES) {
-            if (this.level.isClientSide) {
-                this.playSound(SoundEvents.COPPER_HIT, 0.3F, 1.0F);
-                this.lastHit = this.level.getGameTime();
-            }
-        } else if (id == SPAWN_SPARK_PARTICLES) {
-            CopperGolem.spawnParticlesAtRod(this.level, this);
-        } else {
-            super.handleEntityEvent(id);
-        }
-    }
-
-    @Override
-    protected void customServerAiStep() {
-        super.customServerAiStep();
-
-        if (this.level.isThundering() && this.level instanceof ServerLevel) {
-            this.level.broadcastEntityEvent(this, SPAWN_SPARK_PARTICLES);
-        }
-    }
-
-    @Override
     public boolean shouldRenderAtSqrDistance(double distance) {
-        double d = this.getBoundingBox().getSize() * 4.0;
-        if (Double.isNaN(d) || d == 0.0) {
-            d = 4.0;
+        double dist = this.getBoundingBox().getSize() * 4.0;
+        if (Double.isNaN(dist) || dist == 0.0) {
+            dist = 4.0;
         }
 
-        d *= 64.0;
-        return distance < d * d;
+        dist *= 64.0;
+        return distance < dist * dist;
     }
 
     private void showBreakingParticles() {
@@ -226,10 +342,6 @@ public class OxidizedCopperGolem extends AbstractGolem {
             this.setHealth(health);
             this.gameEvent(GameEvent.ENTITY_DAMAGE, source.getEntity());
         }
-    }
-
-    private void playBrokenSound() {
-        this.playSound(SoundEvents.COPPER_BREAK, 1.0F, 1.0F);
     }
 
     @Override
@@ -264,47 +376,15 @@ public class OxidizedCopperGolem extends AbstractGolem {
         this.gameEvent(GameEvent.ENTITY_DIE);
     }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 30.0D).add(Attributes.MOVEMENT_SPEED, 0.0D).add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
-    }
-
     @Override
     public boolean skipAttackInteraction(Entity entity) {
         return entity instanceof Player player && !this.level.mayInteract(player, this.blockPosition());
     }
 
     @Override
-    public LivingEntity.Fallsounds getFallSounds() {
-        return new LivingEntity.Fallsounds(SoundEvents.COPPER_FALL, SoundEvents.COPPER_FALL);
-    }
-
-    @Nullable @Override
-    protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return SoundEvents.COPPER_HIT;
-    }
-
-    @Nullable @Override
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.COPPER_BREAK;
-    }
-
-    @Override
     public void thunderHit(ServerLevel level, LightningBolt lightning) {
-        this.convertTo(USEntities.COPPER_GOLEM.get(), true);
-    }
-
-    @Override
-    public boolean isAffectedByPotions() {
-        return false;
-    }
-
-    @Override
-    public boolean attackable() {
-        return false;
-    }
-
-    @Override
-    public ItemStack getPickResult() {
-        return new ItemStack(Blocks.OXIDIZED_COPPER);
+        if (!this.isWaxed()) {
+            this.convertTo(USEntities.COPPER_GOLEM.get(), true);
+        }
     }
 }

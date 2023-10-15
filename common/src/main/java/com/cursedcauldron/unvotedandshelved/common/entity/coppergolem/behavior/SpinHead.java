@@ -2,12 +2,10 @@ package com.cursedcauldron.unvotedandshelved.common.entity.coppergolem.behavior;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.USPoses;
 import com.cursedcauldron.unvotedandshelved.common.entity.coppergolem.CopperGolem;
-import com.cursedcauldron.unvotedandshelved.common.registries.USSoundEvents;
 import com.cursedcauldron.unvotedandshelved.common.registries.entity.USMemoryModules;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.Pose;
@@ -49,7 +47,7 @@ public class SpinHead extends Behavior<CopperGolem> {
     @Override
     protected void tick(ServerLevel level, CopperGolem golem, long gameTime) {
         int timeLimit = 40 + (golem.getWeatherState().ordinal() * 10);
-        int playSoundFrame = 20 + (golem.getId() * 5);
+        int playSoundFrame = 20 + (golem.getWeatherState().ordinal() * 5);
 
         // Increment the spinningTicks counter until the time limit is reached
         if (this.spinningTicks < timeLimit) {
@@ -61,19 +59,12 @@ public class SpinHead extends Behavior<CopperGolem> {
 
         // Pick a sound and change the pose
         if (this.spinningTicks == playSoundFrame) {
-            SoundEvent sound = switch (golem.getWeatherState()) {
-                case UNAFFECTED -> USSoundEvents.HEAD_SPIN.get();
-                case EXPOSED -> USSoundEvents.HEAD_SPIN_SLOWER.get();
-                case WEATHERED -> USSoundEvents.HEAD_SPIN_SLOWEST.get();
-                case OXIDIZED -> null;
-            };
-
+            SoundEvent sound = golem.getHeadSpinSound();
             if (sound != null) {
                 golem.playSound(sound, 1.0F, 1.0F);
             }
 
-            // TODO: change to spin head
-            golem.gameEvent(GameEvent.ENTITY_ROAR, golem);
+            golem.gameEvent(GameEvent.ENTITY_SHAKE, golem);
             golem.setPose(USPoses.HEAD_SPIN.get());
         }
     }
