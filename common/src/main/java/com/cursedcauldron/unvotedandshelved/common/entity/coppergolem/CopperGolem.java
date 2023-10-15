@@ -156,13 +156,6 @@ public class CopperGolem extends AbstractGolem {
             } else {
                 this.interactingBelowAnimation.stop();
             }
-
-            if (this.isOxidized()) {
-                this.headSpinAnimation.stop();
-                this.interactingAnimation.stop();
-                this.interactingAboveAnimation.stop();
-                this.interactingBelowAnimation.stop();
-            }
         }
 
         super.onSyncedDataUpdated(data);
@@ -253,7 +246,7 @@ public class CopperGolem extends AbstractGolem {
     @Override
     public void tick() {
         if (this.level.isClientSide) {
-            if (!this.isOxidized() && this.isMoving()) {
+            if (this.isMoving()) {
                 this.walkingAnimation.startIfStopped(this.tickCount);
             } else {
                 this.walkingAnimation.stop();
@@ -269,9 +262,7 @@ public class CopperGolem extends AbstractGolem {
         if (!this.level.isClientSide) {
             if (this.isOxidized()) {
                 this.convertTo(USEntities.OXIDIZED_COPPER_GOLEM.get(), true);
-            }
-
-            if (!this.isWaxed() && !this.isOxidized()) {
+            } else if (!this.isWaxed()) {
                 if (this.random.nextFloat() < 3.4290552E-5F) {
                     this.setWeatherState(WeatherState.values()[this.getWeatherState().ordinal() + 1]);
                 }

@@ -5,6 +5,7 @@ import com.cursedcauldron.unvotedandshelved.common.CommonSetup;
 import com.cursedcauldron.unvotedandshelved.common.registries.USItems;
 import com.cursedcauldron.unvotedandshelved.common.registries.USSoundEvents;
 import com.cursedcauldron.unvotedandshelved.common.registries.entity.*;
+import com.cursedcauldron.unvotedandshelved.core.data.tags.USEntityTypeTags;
 import com.cursedcauldron.unvotedandshelved.core.platform.ModInstance;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,6 +25,9 @@ public class UnvotedAndShelved {
         USActivities.ACTIVITIES.register();
         USEntities.ENTITIES.register();
         USMemoryModules.MEMORY_MODULES.register();
+        USSensors.SENSORS.register();
         USSoundEvents.SOUNDS.register();
+
+        USEntityTypeTags.TAGS.register();
     }
 }

@@ -7,7 +7,9 @@
   "mixins": [
     "BlockEntityTypeMixin",
     "PoseMixin",
-    "access.ActivityAccessor"
+    "ServerLevelMixin",
+    "access.ActivityAccessor",
+    "access.SensorTypeAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
