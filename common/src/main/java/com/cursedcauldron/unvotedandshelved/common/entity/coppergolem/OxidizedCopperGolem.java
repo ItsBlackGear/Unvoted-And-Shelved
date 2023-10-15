@@ -185,6 +185,52 @@ public class OxidizedCopperGolem extends AbstractGolem {
             }
         }
     }
+    
+    @Override
+    public void travel(Vec3 travel) {
+        if (!this.isNoGravity()) {
+            super.travel(travel);
+        }
+    }
+
+    // ========== VISUALS ==============================================================================================
+
+    @Override
+    public boolean shouldRenderAtSqrDistance(double distance) {
+        double dist = this.getBoundingBox().getSize() * 4.0;
+        if (Double.isNaN(dist) || dist == 0.0) {
+            dist = 4.0;
+        }
+
+        dist *= 64.0;
+        return distance < dist * dist;
+    }
+
+    @Override
+    protected float tickHeadTurn(float yRot, float animStep) {
+        this.yBodyRotO = this.yRotO;
+        this.yBodyRot = this.getYRot();
+        return 0.0F;
+    }
+
+    @Override
+    public void setYBodyRot(float yBodyRot) {
+        this.yBodyRotO = this.yRotO = yBodyRot;
+        this.yHeadRotO = this.yHeadRot = yBodyRot;
+    }
+
+    @Override
+    public void setYHeadRot(float yHeadRot) {
+        this.yBodyRotO = this.yRotO = yHeadRot;
+        this.yHeadRotO = this.yHeadRot = yHeadRot;
+    }
+
+    @Override
+    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.75F;
+    }
+
+    // ========== CONVERSION ===========================================================================================
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
@@ -266,6 +312,8 @@ public class OxidizedCopperGolem extends AbstractGolem {
         }
     }
 
+    // ========== DAMAGE HANDLING ======================================================================================
+
     @Override
     public boolean hurt(DamageSource source, float amount) {
         if (this.level.isClientSide || this.isRemoved()) {
@@ -321,17 +369,6 @@ public class OxidizedCopperGolem extends AbstractGolem {
         }
     }
 
-    @Override
-    public boolean shouldRenderAtSqrDistance(double distance) {
-        double dist = this.getBoundingBox().getSize() * 4.0;
-        if (Double.isNaN(dist) || dist == 0.0) {
-            dist = 4.0;
-        }
-
-        dist *= 64.0;
-        return distance < dist * dist;
-    }
-
     private void causeDamage(DamageSource source, float amount) {
         float health = this.getHealth();
         health -= amount;
@@ -343,32 +380,6 @@ public class OxidizedCopperGolem extends AbstractGolem {
             this.setHealth(health);
             this.gameEvent(GameEvent.ENTITY_DAMAGE, source.getEntity());
         }
-    }
-
-    @Override
-    protected float tickHeadTurn(float yRot, float animStep) {
-        this.yBodyRotO = this.yRotO;
-        this.yBodyRot = this.getYRot();
-        return 0.0F;
-    }
-
-    @Override
-    public void travel(Vec3 travel) {
-        if (!this.isNoGravity()) {
-            super.travel(travel);
-        }
-    }
-
-    @Override
-    public void setYBodyRot(float yBodyRot) {
-        this.yBodyRotO = this.yRotO = yBodyRot;
-        this.yHeadRotO = this.yHeadRot = yBodyRot;
-    }
-
-    @Override
-    public void setYHeadRot(float yHeadRot) {
-        this.yBodyRotO = this.yRotO = yHeadRot;
-        this.yHeadRotO = this.yHeadRot = yHeadRot;
     }
 
     @Override
@@ -387,10 +398,5 @@ public class OxidizedCopperGolem extends AbstractGolem {
         if (!this.isWaxed()) {
             this.convertTo(USEntities.COPPER_GOLEM.get(), true);
         }
-    }
-
-    @Override
-    protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
-        return dimensions.height * 0.75F;
     }
 }
