@@ -250,6 +250,11 @@ public class CopperGolem extends AbstractGolem {
     }
 
     @Override
+    protected int decreaseAirSupply(int currentAir) {
+        return currentAir;
+    }
+
+    @Override
     public void tick() {
         if (this.level.isClientSide) {
             if (this.isMoving()) {
