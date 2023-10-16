@@ -39,6 +39,12 @@ allprojects {
     repositories {
         maven { url 'https://jitpack.io' }
         maven { url "https://maven.parchmentmc.org"}
+        maven {
+            url "https://maven.jamieswhiteshirt.com/libs-release"
+            content {
+                includeGroup "com.jamieswhiteshirt"
+            }
+        }
     }
 
     tasks.withType(JavaCompile) {

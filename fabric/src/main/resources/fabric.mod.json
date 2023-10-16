@@ -17,6 +17,9 @@
   "entrypoints": {
     "main": [
       "com.cursedcauldron.unvotedandshelved.core.fabric.UnvotedAndShelvedFabric"
+    ],
+    "fabric-datagen": [
+      "com.cursedcauldron.unvotedandshelved.core.data.DataGeneration"
     ]
   },
   "mixins": [
