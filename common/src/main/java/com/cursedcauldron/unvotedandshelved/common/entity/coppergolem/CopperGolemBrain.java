@@ -29,6 +29,7 @@ public class CopperGolemBrain {
             MemoryModuleType.WALK_TARGET,
             MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
             MemoryModuleType.PATH,
+            MemoryModuleType.IS_PANICKING,
             USMemoryModules.INTERACTION_COOLDOWN_TICKS.get(),
             USMemoryModules.HEAD_SPIN_COOLDOWN_TICKS.get(),
             USMemoryModules.INTERACTION_POS.get()
