@@ -26,15 +26,64 @@ public class CopperGolemModel<T extends AbstractGolem> extends HierarchicalModel
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition part = mesh.getRoot();
 
-        PartDefinition body = part.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 16).addBox(-5.0F, -3.0F, -3.5F, 10.0F, 7.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 16.0F, 0.0F));
-        PartDefinition head = body.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-6.0F, -7.0F, -4.0F, 12.0F, 7.0F, 9.0F, new CubeDeformation(0.0F))
-                .texOffs(32, 16).addBox(-2.0F, -3.0F, -6.0F, 4.0F, 5.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -3.0F, -0.5F));
-         PartDefinition lightingRod = head.addOrReplaceChild("antenna", CubeListBuilder.create().texOffs(0, 0).addBox(-1.0F, -3.0F, -1.0F, 2.0F, 3.0F, 2.0F, new CubeDeformation(0.0F))
-                .texOffs(28, 40).addBox(-2.0F, -6.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -7.0F, 0.0F));
-        PartDefinition leftArm = body.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(0, 34).mirror().addBox(-1.0F, -1.0F, -1.5F, 3.0F, 11.0F, 3.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(6.0F, -2.0F, 0.0F));
-        PartDefinition rightArm = body.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(0, 34).addBox(-2.0F, -1.0F, -1.5F, 3.0F, 11.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offset(-6.0F, -2.0F, 0.0F));
-        PartDefinition leftLeg = body.addOrReplaceChild("left_leg", CubeListBuilder.create().texOffs(12, 40).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(2.5F, 4.0F, 0.0F));
-        PartDefinition rightLeg = body.addOrReplaceChild("right_leg", CubeListBuilder.create().texOffs(12, 40).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-2.5F, 4.0F, 0.0F));
+        PartDefinition body = part.addOrReplaceChild(
+                "body",
+                CubeListBuilder.create()
+                        .texOffs(0, 16)
+                        .addBox(-5.0F, -3.0F, -3.5F, 10.0F, 7.0F, 7.0F),
+                PartPose.offset(0.0F, 16.0F, 0.0F)
+        );
+
+        PartDefinition head = body.addOrReplaceChild(
+                "head",
+                CubeListBuilder.create()
+                        .texOffs(0, 0)
+                        .addBox(-6.0F, -7.0F, -4.0F, 12.0F, 7.0F, 9.0F)
+                        .texOffs(32, 16).addBox(-2.0F, -3.0F, -6.0F, 4.0F, 5.0F, 2.0F),
+                PartPose.offset(0.0F, -3.0F, -0.5F)
+        );
+
+         head.addOrReplaceChild(
+                 "antenna",
+                 CubeListBuilder.create()
+                         .texOffs(0, 0)
+                         .addBox(-1.0F, -3.0F, -1.0F, 2.0F, 3.0F, 2.0F)
+                         .texOffs(28, 40).addBox(-2.0F, -6.0F, -2.0F, 4.0F, 4.0F, 4.0F),
+                 PartPose.offset(0.0F, -7.0F, 0.0F)
+         );
+
+        body.addOrReplaceChild(
+                "left_arm",
+                CubeListBuilder.create()
+                        .texOffs(0, 34).mirror()
+                        .addBox(-1.0F, -1.0F, -1.5F, 3.0F, 11.0F, 3.0F)
+                        .mirror(false),
+                PartPose.offset(6.0F, -2.0F, 0.0F)
+        );
+
+        body.addOrReplaceChild(
+                "right_arm",
+                CubeListBuilder.create()
+                        .texOffs(0, 34)
+                        .addBox(-2.0F, -1.0F, -1.5F, 3.0F, 11.0F, 3.0F),
+                PartPose.offset(-6.0F, -2.0F, 0.0F)
+        );
+
+        body.addOrReplaceChild(
+                "left_leg",
+                CubeListBuilder.create()
+                        .texOffs(12, 40)
+                        .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 4.0F, 4.0F),
+                PartPose.offset(2.5F, 4.0F, 0.0F)
+        );
+
+        body.addOrReplaceChild(
+                "right_leg",
+                CubeListBuilder.create()
+                        .texOffs(12, 40)
+                        .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 4.0F, 4.0F),
+                PartPose.offset(-2.5F, 4.0F, 0.0F)
+        );
 
         return LayerDefinition.create(mesh, 48, 48);
     }
