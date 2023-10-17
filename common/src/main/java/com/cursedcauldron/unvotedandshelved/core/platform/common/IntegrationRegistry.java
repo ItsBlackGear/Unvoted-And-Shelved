@@ -11,6 +11,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.FireBlock;
 
+import java.util.Arrays;
+
 public class IntegrationRegistry {
     public static void flammable(Block block, int flameOdds, int burnOdds) {
         ((FireBlock)Blocks.FIRE).setFlammable(block, flameOdds, burnOdds);
@@ -28,6 +30,10 @@ public class IntegrationRegistry {
     @ExpectPlatform
     public static void interaction(Interaction interaction) {
         throw new AssertionError();
+    }
+
+    public static void interaction(Interaction... interactions) {
+        Arrays.stream(interactions).forEach(IntegrationRegistry::interaction);
     }
 
     public interface Interaction {

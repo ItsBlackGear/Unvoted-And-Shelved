@@ -6,6 +6,7 @@
   ],
   "mixins": [
     "BlockEntityTypeMixin",
+    "LightningBoltMixin",
     "PoseMixin",
     "ServerLevelMixin",
     "access.ActivityAccessor",
