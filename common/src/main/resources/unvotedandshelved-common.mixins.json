@@ -9,7 +9,8 @@
     "PoseMixin",
     "ServerLevelMixin",
     "access.ActivityAccessor",
-    "access.SensorTypeAccessor"
+    "access.SensorTypeAccessor",
+    "access.SimpleParticleTypeAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

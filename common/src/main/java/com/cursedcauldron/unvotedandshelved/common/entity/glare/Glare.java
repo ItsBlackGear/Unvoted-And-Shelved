@@ -1,5 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.common.entity.glare;
 
+import com.cursedcauldron.unvotedandshelved.client.registries.USParticles;
+import com.cursedcauldron.unvotedandshelved.common.registries.USBlocks;
 import com.cursedcauldron.unvotedandshelved.common.registries.USSoundEvents;
 import com.cursedcauldron.unvotedandshelved.common.registries.entity.USMemoryModules;
 import com.mojang.serialization.Dynamic;
@@ -41,7 +43,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -211,7 +212,7 @@ public class Glare extends AgeableMob implements FlyingAnimal {
         if (berries > 0) {
             this.setPersistenceRequired();
             this.setHeldGlowberries(berries);
-//            this.level.addParticle();
+            this.level.addParticle(USParticles.GLOWBERRY_DUST.get(), this.getRandomX(0.6), this.getRandomY(), this.getRandomZ(0.6), 0.0, 0.0, 0.0);
         }
 
         if (this.isLeashed()) {
@@ -266,7 +267,7 @@ public class Glare extends AgeableMob implements FlyingAnimal {
     }
 
     public void setLightBlock(BlockPos pos) {
-        BlockState state = Blocks.LIGHT.defaultBlockState();
+        BlockState state = USBlocks.GLOWBERRY_DUST.get().defaultBlockState();
         if (this.level.getBlockState(pos).isAir()) {
             this.level.setBlockAndUpdate(pos, state);
             this.playSound(USSoundEvents.GLOWBERRY_DUST_PLACE.get(), 1.0F, 1.0F);

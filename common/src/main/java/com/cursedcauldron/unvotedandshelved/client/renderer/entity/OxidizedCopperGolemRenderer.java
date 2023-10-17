@@ -1,7 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.client.renderer.entity;
 
 import com.cursedcauldron.unvotedandshelved.client.registries.USModelLayers;
-import com.cursedcauldron.unvotedandshelved.client.renderer.entity.model.OxidizedCopperGolemModel;
+import com.cursedcauldron.unvotedandshelved.client.renderer.entity.model.CopperGolemModel;
 import com.cursedcauldron.unvotedandshelved.common.entity.coppergolem.OxidizedCopperGolem;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -14,9 +14,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
 @Environment(EnvType.CLIENT)
-public class OxidizedCopperGolemRenderer extends MobRenderer<OxidizedCopperGolem, OxidizedCopperGolemModel<OxidizedCopperGolem>> {
+public class OxidizedCopperGolemRenderer extends MobRenderer<OxidizedCopperGolem, CopperGolemModel<OxidizedCopperGolem>> {
     public OxidizedCopperGolemRenderer(EntityRendererProvider.Context context) {
-        super(context, new OxidizedCopperGolemModel<>(context.bakeLayer(USModelLayers.COPPER_GOLEM)), 0.5F);
+        super(context, new CopperGolemModel<>(context.bakeLayer(USModelLayers.COPPER_GOLEM)), 0.5F);
     }
 
     @Override

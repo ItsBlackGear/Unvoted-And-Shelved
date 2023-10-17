@@ -28,9 +28,6 @@ public class USSoundEvents {
     public static final Supplier<SoundEvent> GLARE_DEATH = create("glare_death");
     public static final Supplier<SoundEvent> GLARE_GIVE_GLOWBERRIES = create("glare_give_glow_berries");
 
-
-//    public static final SoundType GLOW = new SoundTypeImpl(1.0F, 2.0F, USSoundEvents.GLOWBERRY_DUST_PLACE, USSoundEvents.GLOWBERRY_DUST_STEP, USSoundEvents.GLOWBERRY_DUST_PLACE , USSoundEvents.GLOWBERRY_DUST_PLACE, USSoundEvents.GLOWBERRY_DUST_PLACE);
-
     public static Supplier<SoundEvent> create(String key) {
         return SOUNDS.register(key, () -> new SoundEvent(new ResourceLocation(UnvotedAndShelved.MOD_ID, key)));
     }

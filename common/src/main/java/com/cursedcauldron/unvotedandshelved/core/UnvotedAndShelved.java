@@ -1,7 +1,9 @@
 package com.cursedcauldron.unvotedandshelved.core;
 
 import com.cursedcauldron.unvotedandshelved.client.ClientSetup;
+import com.cursedcauldron.unvotedandshelved.client.registries.USParticles;
 import com.cursedcauldron.unvotedandshelved.common.CommonSetup;
+import com.cursedcauldron.unvotedandshelved.common.registries.USBlocks;
 import com.cursedcauldron.unvotedandshelved.common.registries.USItems;
 import com.cursedcauldron.unvotedandshelved.common.registries.USSoundEvents;
 import com.cursedcauldron.unvotedandshelved.common.registries.entity.*;
@@ -19,15 +21,18 @@ public class UnvotedAndShelved {
         INSTANCE.bootstrap();
 
         USItems.ITEMS.register();
+        USBlocks.BLOCKS.register();
+        USParticles.PARTICLES.register();
+        USSoundEvents.SOUNDS.register();
 
-        USDataSerializers.bootstrap();
-
+        // ===== ENTITIES =========================
         USActivities.ACTIVITIES.register();
+        USDataSerializers.bootstrap();
         USEntities.ENTITIES.register();
         USMemoryModules.MEMORY_MODULES.register();
         USSensors.SENSORS.register();
-        USSoundEvents.SOUNDS.register();
 
+        // ===== TAGS =============================
         USEntityTypeTags.TAGS.register();
     }
 }
