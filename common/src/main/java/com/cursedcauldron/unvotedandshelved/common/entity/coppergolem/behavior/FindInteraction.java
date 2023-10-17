@@ -51,10 +51,7 @@ public class FindInteraction extends Behavior<CopperGolem> {
         BlockPos copperPos = this.getCopperPos(level, golem);
         if (copperPos != null) {
             this.copperPos = copperPos;
-            BlockPos copperPosBelow = this.getCopperPos(level, golem).below();
-            if (copperPosBelow != null) {
-                this.copperPosBelow = copperPosBelow;
-            }
+            this.copperPosBelow = copperPos.below();
         }
     }
 
@@ -75,21 +72,15 @@ public class FindInteraction extends Behavior<CopperGolem> {
                     this.copperPos = copperPos;
                 }
             } else if (buttonBelow != null && buttonBelow.canReach()) {
-//                golem.getNavigation().moveTo(button, 0.4);
                 golem.getNavigation().moveTo(buttonBelow, 0.4);
-//                BlockState copperBelowState = level.getBlockState(copperPos);
                 BlockState copperBelowState = level.getBlockState(copperPosBelow);
-//                if (golem.blockPosition().closerThan(copperPos, 2) && (copperBelowState.is(BlockTags.BUTTONS) || copperBelowState.is(Blocks.LEVER))) {
                 if (golem.blockPosition().closerThan(copperPosBelow, 2) && (copperBelowState.is(BlockTags.BUTTONS) || copperBelowState.is(Blocks.LEVER))) {
-//                    golem.getBrain().setMemory(USMemoryModules.INTERACTION_POS.get(), copperPos);
                     golem.getBrain().setMemory(USMemoryModules.INTERACTION_POS.get(), copperPosBelow);
-//                    this.copperPos = copperPos;
                     this.copperPosBelow = copperPosBelow;
                 }
             } else {
                 golem.getBrain().eraseMemory(USMemoryModules.INTERACTION_POS.get());
                 golem.getBrain().setMemory(USMemoryModules.INTERACTION_COOLDOWN_TICKS.get(), INTERACTION_COOLDOWN.sample(level.random));
-
             }
         }
     }

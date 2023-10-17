@@ -5,6 +5,7 @@ import com.cursedcauldron.unvotedandshelved.common.entity.coppergolem.CopperGole
 import com.cursedcauldron.unvotedandshelved.common.registries.entity.USMemoryModules;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -13,6 +14,8 @@ import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.behavior.Behavior;
+import net.minecraft.world.entity.ai.behavior.BlockPosTracker;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ButtonBlock;
@@ -30,7 +33,8 @@ public class TriggerInteraction extends Behavior<CopperGolem> {
 
     public TriggerInteraction() {
         super(ImmutableMap.of(
-                USMemoryModules.INTERACTION_POS.get(), MemoryStatus.VALUE_PRESENT
+                USMemoryModules.INTERACTION_POS.get(), MemoryStatus.VALUE_PRESENT,
+                MemoryModuleType.LOOK_TARGET, MemoryStatus.REGISTERED
         ));
     }
 
@@ -51,13 +55,14 @@ public class TriggerInteraction extends Behavior<CopperGolem> {
             BlockState state = level.getBlockState(pos);
 
             // Check if the golem is close enough to interact with the button or lever
-            boolean isCloseEnough = golem.blockPosition().closerThan(pos, 2);
+            boolean isCloseEnough = golem.blockPosition().closerThan(pos, 1.75);
 
             if (isCloseEnough && (state.is(BlockTags.BUTTONS) || state.is(Blocks.LEVER))) {
                 AttachFace face = state.getValue(BlockStateProperties.ATTACH_FACE);
-                golem.getLookControl().setLookAt(pos.getX(), pos.getY(), pos.getZ());
+                Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+                golem.getBrain().setMemory(MemoryModuleType.LOOK_TARGET, new BlockPosTracker(pos.relative(direction.getOpposite())));
 
-                // Set the golem's pose based on the block's attachement face
+                // Set the golem's pose based on the block's attachment face
                 golem.setPose(switch (face) {
                     case FLOOR -> USPoses.INTERACT_BELOW.get();
                     case CEILING -> USPoses.INTERACT_ABOVE.get();
@@ -65,20 +70,24 @@ public class TriggerInteraction extends Behavior<CopperGolem> {
                 });
 
                 // Perform the appropriate interaction for the block
-                if (state.getBlock() instanceof ButtonBlock button) {
-                    button.press(state, level, pos);
-
-                    if (button instanceof WoodButtonBlock) {
-                        level.playSound(null, pos, SoundEvents.WOODEN_BUTTON_CLICK_ON, SoundSource.BLOCKS, 0.3F, 0.6F);
-                    } else {
-                        level.playSound(null, pos, SoundEvents.STONE_BUTTON_CLICK_ON, SoundSource.BLOCKS, 0.3F, 0.6F);
-                    }
-                } else if (state.getBlock() instanceof LeverBlock lever) {
-                    lever.pull(state, level, pos);
-                    level.playSound(null, pos, SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
-                }
+                this.triggerInteraction(level, pos, state);
             }
         });
+    }
+
+    private void triggerInteraction(ServerLevel level, BlockPos pos, BlockState state) {
+        if (state.getBlock() instanceof ButtonBlock button) {
+            button.press(state, level, pos);
+
+            if (button instanceof WoodButtonBlock) {
+                level.playSound(null, pos, SoundEvents.WOODEN_BUTTON_CLICK_ON, SoundSource.BLOCKS, 0.3F, 0.6F);
+            } else {
+                level.playSound(null, pos, SoundEvents.STONE_BUTTON_CLICK_ON, SoundSource.BLOCKS, 0.3F, 0.6F);
+            }
+        } else if (state.getBlock() instanceof LeverBlock lever) {
+            lever.pull(state, level, pos);
+            level.playSound(null, pos, SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
+        }
     }
 
     @Override
