@@ -184,7 +184,7 @@ public class CopperGolem extends AbstractGolem {
 
     public static void spawnParticlesAtRod(Level level, LivingEntity entity) {
         if (level.random.nextInt(200) <= level.getGameTime() % 200L && level.canSeeSky(entity.blockPosition())) {
-            spawnSparklingParticles(level, entity.position().add(0, 1, 0), UniformInt.of(1, 2));
+            spawnSparklingParticles(level, entity.position().add(0, 0.45, 0), UniformInt.of(1, 2));
         }
     }
 
@@ -195,7 +195,7 @@ public class CopperGolem extends AbstractGolem {
             double x = pos.x + Mth.nextDouble(level.random, -1.0, 1.0) * 0.125;
             double y = pos.y + Mth.nextDouble(level.random, 0.75, 1.25) * 0.5;
             double z = pos.z + Mth.nextDouble(level.random, -1.0, 1.0) * 0.125;
-            double speed = Mth.nextDouble(level.random, -1.0, 1.0);
+            double speed = Mth.nextDouble(level.random, -0.5, 0.5);
             level.addParticle(ParticleTypes.ELECTRIC_SPARK, x, y, z, 0, speed, 0);
         }
     }
