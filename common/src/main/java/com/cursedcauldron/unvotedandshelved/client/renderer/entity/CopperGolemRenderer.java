@@ -24,7 +24,7 @@ public class CopperGolemRenderer extends MobRenderer<CopperGolem, CopperGolemMod
     });
 
     public CopperGolemRenderer(EntityRendererProvider.Context context) {
-        super(context, new CopperGolemModel<>(context.bakeLayer(USModelLayers.COPPER_GOLEM)), 0.5F);
+        super(context, new CopperGolemModel<>(context.bakeLayer(USModelLayers.COPPER_GOLEM)), 0.4F);
     }
 
     @Override
