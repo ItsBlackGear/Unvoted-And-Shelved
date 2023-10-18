@@ -2,14 +2,17 @@ package com.cursedcauldron.unvotedandshelved.common.entity.coppergolem.behavior;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.USPoses;
 import com.cursedcauldron.unvotedandshelved.common.entity.coppergolem.CopperGolem;
+import com.cursedcauldron.unvotedandshelved.common.registries.USSoundEvents;
 import com.cursedcauldron.unvotedandshelved.common.registries.entity.USMemoryModules;
 import com.cursedcauldron.unvotedandshelved.core.data.tags.USBlockTags;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.Pose;
@@ -19,7 +22,6 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.LeverBlock;
-import net.minecraft.world.level.block.WoodButtonBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.AttachFace;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -28,7 +30,7 @@ import java.util.Optional;
 
 public class TriggerInteraction extends Behavior<CopperGolem> {
     private static final IntProvider INTERACTION_COOLDOWN = UniformInt.of(120, 240);
-    private int buttonTicks;
+    private int interactionTicks;
 
     public TriggerInteraction() {
         super(ImmutableMap.of(
@@ -39,12 +41,12 @@ public class TriggerInteraction extends Behavior<CopperGolem> {
 
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, CopperGolem golem) {
-        return golem.getBrain().getMemory(USMemoryModules.INTERACTION_POS.get()).isPresent() && golem.getBrain().getMemory(USMemoryModules.INTERACTION_COOLDOWN_TICKS.get()).isEmpty();
+        return this.canInteractWithPosition(golem);
     }
 
     @Override
     protected boolean canStillUse(ServerLevel level, CopperGolem golem, long gameTime) {
-        return golem.getBrain().getMemory(USMemoryModules.INTERACTION_POS.get()).isPresent() && golem.getBrain().getMemory(USMemoryModules.INTERACTION_COOLDOWN_TICKS.get()).isEmpty();
+        return this.canInteractWithPosition(golem);
     }
 
     @Override
@@ -74,25 +76,10 @@ public class TriggerInteraction extends Behavior<CopperGolem> {
         });
     }
 
-    private void triggerInteraction(ServerLevel level, BlockPos pos, BlockState state) {
-        if (state.getBlock() instanceof ButtonBlock button) {
-            button.press(state, level, pos);
-
-            if (button instanceof WoodButtonBlock) {
-                level.playSound(null, pos, SoundEvents.WOODEN_BUTTON_CLICK_ON, SoundSource.BLOCKS, 0.3F, 0.6F);
-            } else {
-                level.playSound(null, pos, SoundEvents.STONE_BUTTON_CLICK_ON, SoundSource.BLOCKS, 0.3F, 0.6F);
-            }
-        } else if (state.getBlock() instanceof LeverBlock lever) {
-            lever.pull(state, level, pos);
-            level.playSound(null, pos, SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
-        }
-    }
-
     @Override
     protected void tick(ServerLevel level, CopperGolem golem, long gameTime) {
-        if (this.buttonTicks < 60) {
-            this.buttonTicks++;
+        if (this.interactionTicks < 60) {
+            this.interactionTicks++;
         } else {
             golem.getBrain().eraseMemory(USMemoryModules.INTERACTION_POS.get());
             golem.getBrain().setMemory(USMemoryModules.INTERACTION_COOLDOWN_TICKS.get(), INTERACTION_COOLDOWN.sample(level.getRandom()));
@@ -102,9 +89,36 @@ public class TriggerInteraction extends Behavior<CopperGolem> {
 
     @Override
     protected void stop(ServerLevel level, CopperGolem golem, long gameTime) {
-        if (this.buttonTicks >= 1) {
-            this.buttonTicks = 0;
+        if (this.interactionTicks >= 1) {
+            this.interactionTicks = 0;
             golem.setPose(Pose.STANDING);
         }
+    }
+
+    private void triggerInteraction(ServerLevel level, BlockPos pos, BlockState state) {
+        if (state.getBlock() instanceof ButtonBlock button) {
+            if (!button.defaultBlockState().getValue(BlockStateProperties.POWERED)) {
+                button.press(state, level, pos);
+
+                SoundEvent sound;
+                if (state.is(BlockTags.WOODEN_BUTTONS)) {
+                    sound = SoundEvents.WOODEN_BUTTON_CLICK_ON;
+                } else if (state.is(USBlockTags.COPPER_BUTTONS)) {
+                    sound = USSoundEvents.COPPER_CLICK.get();
+                } else {
+                    sound = SoundEvents.STONE_BUTTON_CLICK_ON;
+                }
+
+                level.playSound(null, pos, sound, SoundSource.BLOCKS, 0.3F, 0.6F);
+            }
+        } else if (state.getBlock() instanceof LeverBlock lever) {
+            lever.pull(state, level, pos);
+            level.playSound(null, pos, SoundEvents.LEVER_CLICK, SoundSource.BLOCKS, 0.3F, 0.6F);
+        }
+    }
+
+    private boolean canInteractWithPosition(CopperGolem golem) {
+        return golem.getBrain().getMemory(USMemoryModules.INTERACTION_POS.get()).isPresent() &&
+                golem.getBrain().getMemory(USMemoryModules.INTERACTION_COOLDOWN_TICKS.get()).isEmpty();
     }
 }
