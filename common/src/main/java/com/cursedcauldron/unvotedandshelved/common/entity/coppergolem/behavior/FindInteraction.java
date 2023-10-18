@@ -2,10 +2,10 @@ package com.cursedcauldron.unvotedandshelved.common.entity.coppergolem.behavior;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.coppergolem.CopperGolem;
 import com.cursedcauldron.unvotedandshelved.common.registries.entity.USMemoryModules;
+import com.cursedcauldron.unvotedandshelved.core.data.tags.USBlockTags;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -13,7 +13,6 @@ import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.Path;
 import org.apache.commons.compress.utils.Lists;
@@ -67,14 +66,14 @@ public class FindInteraction extends Behavior<CopperGolem> {
             if (button != null && button.canReach()) {
                 golem.getNavigation().moveTo(button, 0.4);
                 BlockState copperState = level.getBlockState(copperPos);
-                if (golem.blockPosition().closerThan(copperPos, 2) && (copperState.is(BlockTags.BUTTONS) || copperState.is(Blocks.LEVER))) {
+                if (golem.blockPosition().closerThan(copperPos, 2) && copperState.is(USBlockTags.COPPER_GOLEM_INTERACTABLES)) {
                     golem.getBrain().setMemory(USMemoryModules.INTERACTION_POS.get(), copperPos);
                     this.copperPos = copperPos;
                 }
             } else if (buttonBelow != null && buttonBelow.canReach()) {
                 golem.getNavigation().moveTo(buttonBelow, 0.4);
                 BlockState copperBelowState = level.getBlockState(copperPosBelow);
-                if (golem.blockPosition().closerThan(copperPosBelow, 2) && (copperBelowState.is(BlockTags.BUTTONS) || copperBelowState.is(Blocks.LEVER))) {
+                if (golem.blockPosition().closerThan(copperPosBelow, 2) && copperBelowState.is(USBlockTags.COPPER_GOLEM_INTERACTABLES)) {
                     golem.getBrain().setMemory(USMemoryModules.INTERACTION_POS.get(), copperPosBelow);
                     this.copperPosBelow = copperPosBelow;
                 }
@@ -95,13 +94,12 @@ public class FindInteraction extends Behavior<CopperGolem> {
                 for (int z = -radius; z <= radius; z++) {
                     BlockPos pos = new BlockPos(golem.getX() + x, golem.getY() + y, golem.getZ() + z);
                     BlockState state = level.getBlockState(pos);
-                    if (state.is(BlockTags.BUTTONS) || state.is(Blocks.LEVER)) {
+                    if (state.is(USBlockTags.COPPER_GOLEM_INTERACTABLES)) {
                         possibles.add(pos);
                     }
                 }
             }
         }
-
 
         if (possibles.isEmpty()) {
             golem.getBrain().setMemory(USMemoryModules.INTERACTION_COOLDOWN_TICKS.get(), INTERACTION_COOLDOWN.sample(random));

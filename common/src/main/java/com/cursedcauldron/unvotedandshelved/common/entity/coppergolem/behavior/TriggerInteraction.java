@@ -3,13 +3,13 @@ package com.cursedcauldron.unvotedandshelved.common.entity.coppergolem.behavior;
 import com.cursedcauldron.unvotedandshelved.common.entity.USPoses;
 import com.cursedcauldron.unvotedandshelved.common.entity.coppergolem.CopperGolem;
 import com.cursedcauldron.unvotedandshelved.common.registries.entity.USMemoryModules;
+import com.cursedcauldron.unvotedandshelved.core.data.tags.USBlockTags;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.Pose;
@@ -17,7 +17,6 @@ import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.behavior.BlockPosTracker;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.WoodButtonBlock;
@@ -57,7 +56,7 @@ public class TriggerInteraction extends Behavior<CopperGolem> {
             // Check if the golem is close enough to interact with the button or lever
             boolean isCloseEnough = golem.blockPosition().closerThan(pos, 1.75);
 
-            if (isCloseEnough && (state.is(BlockTags.BUTTONS) || state.is(Blocks.LEVER))) {
+            if (isCloseEnough && state.is(USBlockTags.COPPER_GOLEM_INTERACTABLES)) {
                 AttachFace face = state.getValue(BlockStateProperties.ATTACH_FACE);
                 Direction direction = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
                 golem.getBrain().setMemory(MemoryModuleType.LOOK_TARGET, new BlockPosTracker(pos.relative(direction.getOpposite())));

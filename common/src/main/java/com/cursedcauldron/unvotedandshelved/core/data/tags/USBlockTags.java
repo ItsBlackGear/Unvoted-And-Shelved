@@ -11,5 +11,6 @@ import net.minecraft.world.level.block.Block;
 public class USBlockTags {
     public static final TagRegistry<Block> TAGS = TagRegistry.of(Registry.BLOCK_REGISTRY, UnvotedAndShelved.MOD_ID);
 
+    public static final TagKey<Block> COPPER_GOLEM_INTERACTABLES = TAGS.create("copper_golem_interactables");
     public static final TagKey<Block> COPPER_BUTTONS = TAGS.create("copper_buttons");
 }

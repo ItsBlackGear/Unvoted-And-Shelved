@@ -24,6 +24,6 @@ public class TagRegistry<T> {
     }
 
     public void register() {
-        UnvotedAndShelved.LOGGER.info("Initializing tags of type: " + this.registry.registry());
+        UnvotedAndShelved.LOGGER.info("Initializing tags of type: " + this.registry.location().getPath());
     }
 }

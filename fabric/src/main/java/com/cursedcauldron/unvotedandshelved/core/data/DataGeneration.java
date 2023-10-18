@@ -10,6 +10,7 @@ public class DataGeneration implements DataGeneratorEntrypoint {
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator generator) {
         generator.addProvider(EntityTagGenerator::new);
-        generator.addProvider(new ItemTagGenerator(generator, generator.addProvider(BlockTagGenerator::new)));
+        BlockTagGenerator blockTagGenerator = generator.addProvider(BlockTagGenerator::new);
+        generator.addProvider(new ItemTagGenerator(generator, blockTagGenerator));
     }
 }

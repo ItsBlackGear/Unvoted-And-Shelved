@@ -5,6 +5,7 @@ import com.cursedcauldron.unvotedandshelved.core.data.tags.USBlockTags;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Blocks;
 
 public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
     public BlockTagGenerator(FabricDataGenerator generator) {
@@ -13,6 +14,8 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
 
     @Override
     protected void generateTags() {
+        this.tag(BlockTags.BUTTONS)
+                .addTag(USBlockTags.COPPER_BUTTONS);
         this.tag(USBlockTags.COPPER_BUTTONS)
                 .add(
                         USBlocks.COPPER_BUTTON.get(),
@@ -24,7 +27,8 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
                         USBlocks.WAXED_WEATHERED_COPPER_BUTTON.get(),
                         USBlocks.WAXED_OXIDIZED_COPPER_BUTTON.get()
                 );
-        this.tag(BlockTags.BUTTONS)
-                .addTag(USBlockTags.COPPER_BUTTONS);
+        this.tag(USBlockTags.COPPER_GOLEM_INTERACTABLES)
+                .addTag(BlockTags.BUTTONS)
+                .add(Blocks.LEVER);
     }
 }
