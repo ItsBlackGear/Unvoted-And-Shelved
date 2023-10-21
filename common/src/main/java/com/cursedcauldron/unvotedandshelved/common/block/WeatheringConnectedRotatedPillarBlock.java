@@ -4,12 +4,15 @@ import com.cursedcauldron.unvotedandshelved.common.block.resource.USWeatheringCo
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
+import net.minecraft.world.level.block.WeatheringCopper;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class WeatheringCopperButtonBlock extends CopperButtonBlock implements USWeatheringCopper {
-    public WeatheringCopperButtonBlock(WeatherState weatherState, Properties properties) {
-        super(weatherState, properties);
+public class WeatheringConnectedRotatedPillarBlock extends ConnectedRotatedPillarBlock implements USWeatheringCopper {
+    private final WeatheringCopper.WeatherState weatherState;
+
+    public WeatheringConnectedRotatedPillarBlock(WeatheringCopper.WeatherState weatherState, Properties properties) {
+        super(properties);
+        this.weatherState = weatherState;
     }
 
     @Override
@@ -23,7 +26,7 @@ public class WeatheringCopperButtonBlock extends CopperButtonBlock implements US
     }
 
     @Override
-    public WeatherState getAge() {
+    public WeatheringCopper.WeatherState getAge() {
         return this.weatherState;
     }
 }

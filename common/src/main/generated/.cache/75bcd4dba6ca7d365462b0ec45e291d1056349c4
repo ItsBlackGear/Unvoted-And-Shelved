@@ -1,4 +1,6 @@
-// 1.19.2	2023-10-18T14:36:44.9730601	Tags for minecraft:block
+// 1.19.2	2023-10-21T01:09:40.6893634	Tags for minecraft:block
 8dc68b972feb60caa323e4360918d134f415d6d2 data\unvotedandshelved\tags\blocks\copper_golem_interactables.json
+739f9ed1cd57ac7b84d6be8adf6576999e6cb4ad data\minecraft\tags\blocks\mineable\pickaxe.json
 2752460e73d3f785b297914ed86589e0fee5d570 data\minecraft\tags\blocks\buttons.json
 76a718f82310135b8f4845e7983d4340422573fb data\unvotedandshelved\tags\blocks\copper_buttons.json
+4557fdc137829ebec735d27362013fc07052a3b5 data\unvotedandshelved\tags\blocks\copper_pillars.json

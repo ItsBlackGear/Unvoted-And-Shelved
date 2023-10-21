@@ -30,5 +30,19 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
         this.tag(USBlockTags.COPPER_GOLEM_INTERACTABLES)
                 .addTag(BlockTags.BUTTONS)
                 .add(Blocks.LEVER);
+        this.tag(USBlockTags.COPPER_PILLARS)
+                .add(
+                        USBlocks.COPPER_PILLAR.get(),
+                        USBlocks.EXPOSED_COPPER_PILLAR.get(),
+                        USBlocks.WEATHERED_COPPER_PILLAR.get(),
+                        USBlocks.OXIDIZED_COPPER_PILLAR.get(),
+                        USBlocks.WAXED_COPPER_PILLAR.get(),
+                        USBlocks.WAXED_EXPOSED_COPPER_PILLAR.get(),
+                        USBlocks.WAXED_WEATHERED_COPPER_PILLAR.get(),
+                        USBlocks.WAXED_OXIDIZED_COPPER_PILLAR.get()
+                );
+        this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                .addTag(USBlockTags.COPPER_BUTTONS)
+                .addTag(USBlockTags.COPPER_PILLARS);
     }
 }

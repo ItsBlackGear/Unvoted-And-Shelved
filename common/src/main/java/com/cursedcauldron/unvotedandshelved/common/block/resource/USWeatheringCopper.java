@@ -1,4 +1,4 @@
-package com.cursedcauldron.unvotedandshelved.common.resources.block;
+package com.cursedcauldron.unvotedandshelved.common.block.resource;
 
 import com.cursedcauldron.unvotedandshelved.common.registries.USBlocks;
 import com.google.common.base.Suppliers;
@@ -18,6 +18,9 @@ public interface USWeatheringCopper extends ChangeOverTimeBlock<WeatherState> {
                     .put(USBlocks.COPPER_BUTTON.get(), USBlocks.EXPOSED_COPPER_BUTTON.get())
                     .put(USBlocks.EXPOSED_COPPER_BUTTON.get(), USBlocks.WEATHERED_COPPER_BUTTON.get())
                     .put(USBlocks.WEATHERED_COPPER_BUTTON.get(), USBlocks.OXIDIZED_COPPER_BUTTON.get())
+                    .put(USBlocks.COPPER_PILLAR.get(), USBlocks.EXPOSED_COPPER_PILLAR.get())
+                    .put(USBlocks.EXPOSED_COPPER_PILLAR.get(), USBlocks.WEATHERED_COPPER_PILLAR.get())
+                    .put(USBlocks.WEATHERED_COPPER_PILLAR.get(), USBlocks.OXIDIZED_COPPER_PILLAR.get())
                     .build()
     );
 

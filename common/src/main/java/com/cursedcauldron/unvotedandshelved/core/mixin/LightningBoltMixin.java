@@ -1,6 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.core.mixin;
 
-import com.cursedcauldron.unvotedandshelved.common.resources.block.USWeatheringCopper;
+import com.cursedcauldron.unvotedandshelved.common.block.resource.USWeatheringCopper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.level.Level;

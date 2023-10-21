@@ -1,0 +1,35 @@
+{
+	"parent": "minecraft:block/block",
+	"textures": {
+		"end": "#end",
+		"particle": "#side",
+		"side": "#side",
+		"joint": "#joint"
+	},
+	"elements": [
+		{
+			"name": "Base Block",
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#side", "cullface": "north"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#side", "cullface": "east"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#side", "cullface": "south"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#side", "cullface": "west"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#end", "cullface": "up"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#end", "cullface": "down"}
+			}
+		},
+		{
+			"name": "Joint",
+			"from": [-0.01, 15.99, -0.01],
+			"to": [16.01, 18.01, 16.01],
+			"faces": {
+				"north": {"uv": [0, 14, 16, 16], "texture": "#joint"},
+				"east": {"uv": [0, 14, 16, 16], "texture": "#joint"},
+				"south": {"uv": [0, 14, 16, 16], "texture": "#joint"},
+				"west": {"uv": [0, 14, 16, 16], "texture": "#joint"}
+			}
+		}
+	]
+}

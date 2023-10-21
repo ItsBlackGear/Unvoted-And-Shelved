@@ -1,7 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.common.integration.interaction;
 
 import com.cursedcauldron.unvotedandshelved.common.registries.USBlocks;
-import com.cursedcauldron.unvotedandshelved.common.resources.block.USWeatheringCopper;
+import com.cursedcauldron.unvotedandshelved.common.block.resource.USWeatheringCopper;
 import com.cursedcauldron.unvotedandshelved.core.platform.common.IntegrationRegistry;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.BiMap;
@@ -32,6 +32,10 @@ public class CopperWaxInteraction implements IntegrationRegistry.Interaction {
                 .put(USBlocks.EXPOSED_COPPER_BUTTON.get(), USBlocks.WAXED_EXPOSED_COPPER_BUTTON.get())
                 .put(USBlocks.WEATHERED_COPPER_BUTTON.get(), USBlocks.WAXED_WEATHERED_COPPER_BUTTON.get())
                 .put(USBlocks.OXIDIZED_COPPER_BUTTON.get(), USBlocks.WAXED_OXIDIZED_COPPER_BUTTON.get())
+                .put(USBlocks.COPPER_PILLAR.get(), USBlocks.WAXED_COPPER_PILLAR.get())
+                .put(USBlocks.EXPOSED_COPPER_PILLAR.get(), USBlocks.WAXED_EXPOSED_COPPER_PILLAR.get())
+                .put(USBlocks.WEATHERED_COPPER_PILLAR.get(), USBlocks.WAXED_WEATHERED_COPPER_PILLAR.get())
+                .put(USBlocks.OXIDIZED_COPPER_PILLAR.get(), USBlocks.WAXED_OXIDIZED_COPPER_PILLAR.get())
                 .build();
     });
 

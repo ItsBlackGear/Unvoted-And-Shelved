@@ -13,4 +13,5 @@ public class USBlockTags {
 
     public static final TagKey<Block> COPPER_GOLEM_INTERACTABLES = TAGS.create("copper_golem_interactables");
     public static final TagKey<Block> COPPER_BUTTONS = TAGS.create("copper_buttons");
+    public static final TagKey<Block> COPPER_PILLARS = TAGS.create("copper_pillars");
 }

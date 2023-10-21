@@ -1,8 +1,6 @@
 package com.cursedcauldron.unvotedandshelved.common.registries;
 
-import com.cursedcauldron.unvotedandshelved.common.block.CopperButtonBlock;
-import com.cursedcauldron.unvotedandshelved.common.block.GlowberryDustBlock;
-import com.cursedcauldron.unvotedandshelved.common.block.WeatheringCopperButtonBlock;
+import com.cursedcauldron.unvotedandshelved.common.block.*;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.core.platform.CoreRegistry;
 import net.minecraft.core.BlockPos;
@@ -13,6 +11,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
@@ -34,7 +33,7 @@ public class USBlocks {
             )
     );
 
-    // ========== COPPER BUTTONS ========================================================================================
+    // ========== COPPER BUTTONS =======================================================================================
 
     public static final Supplier<Block> COPPER_BUTTON = create(
             "copper_button",
@@ -93,14 +92,60 @@ public class USBlocks {
             ), CreativeModeTab.TAB_REDSTONE
     );
 
+    // ========== COPPER PILLARS =======================================================================================
 
-    private static Boolean ocelotOrParrot(BlockState state, BlockGetter blockGetter, BlockPos pos, EntityType<?> entity) {
-        return entity == EntityType.OCELOT || entity == EntityType.PARROT;
-    }
-
-    private static boolean never(BlockState state, BlockGetter blockGetter, BlockPos pos) {
-        return false;
-    }
+    public static final Supplier<Block> COPPER_PILLAR = create(
+            "copper_pillar",
+            () -> new WeatheringConnectedRotatedPillarBlock(
+                    WeatherState.UNAFFECTED,
+                    Properties.copy(Blocks.COPPER_BLOCK)
+            ), CreativeModeTab.TAB_BUILDING_BLOCKS
+    );
+    public static final Supplier<Block> EXPOSED_COPPER_PILLAR = create(
+            "exposed_copper_pillar",
+            () -> new WeatheringConnectedRotatedPillarBlock(
+                    WeatherState.EXPOSED,
+                    Properties.copy(Blocks.EXPOSED_COPPER)
+            ), CreativeModeTab.TAB_BUILDING_BLOCKS
+    );
+    public static final Supplier<Block> WEATHERED_COPPER_PILLAR = create(
+            "weathered_copper_pillar",
+            () -> new WeatheringConnectedRotatedPillarBlock(
+                    WeatherState.WEATHERED,
+                    Properties.copy(Blocks.WEATHERED_COPPER)
+            ), CreativeModeTab.TAB_BUILDING_BLOCKS
+    );
+    public static final Supplier<Block> OXIDIZED_COPPER_PILLAR = create(
+            "oxidized_copper_pillar",
+            () -> new WeatheringConnectedRotatedPillarBlock(
+                    WeatherState.WEATHERED,
+                    Properties.copy(Blocks.OXIDIZED_COPPER)
+            ), CreativeModeTab.TAB_BUILDING_BLOCKS
+    );
+    public static final Supplier<Block> WAXED_COPPER_PILLAR = create(
+            "waxed_copper_pillar",
+            () -> new ConnectedRotatedPillarBlock(
+                    Properties.copy(Blocks.COPPER_BLOCK)
+            ), CreativeModeTab.TAB_BUILDING_BLOCKS
+    );
+    public static final Supplier<Block> WAXED_EXPOSED_COPPER_PILLAR = create(
+            "waxed_exposed_copper_pillar",
+            () -> new ConnectedRotatedPillarBlock(
+                    Properties.copy(Blocks.EXPOSED_COPPER)
+            ), CreativeModeTab.TAB_BUILDING_BLOCKS
+    );
+    public static final Supplier<Block> WAXED_WEATHERED_COPPER_PILLAR = create(
+            "waxed_weathered_copper_pillar",
+            () -> new ConnectedRotatedPillarBlock(
+                    Properties.copy(Blocks.WEATHERED_COPPER)
+            ), CreativeModeTab.TAB_BUILDING_BLOCKS
+    );
+    public static final Supplier<Block> WAXED_OXIDIZED_COPPER_PILLAR = create(
+            "waxed_oxidized_copper_pillar",
+            () -> new ConnectedRotatedPillarBlock(
+                    Properties.copy(Blocks.OXIDIZED_COPPER)
+            ), CreativeModeTab.TAB_BUILDING_BLOCKS
+    );
 
     public static Supplier<Block> create(String id, Supplier<Block> block) {
         return BLOCKS.register(id, block);
