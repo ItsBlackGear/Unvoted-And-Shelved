@@ -106,21 +106,11 @@ public class CopperGolemModel<T extends AbstractGolem> extends HierarchicalModel
                 this.animateWalk(CopperGolemAnimations.WALKING, limbSwing, limbSwingAmount, WALK_ANIMATION_SPEED, WALK_ANIMATION_SCALE_FACTOR);
             }
 
-            this.animate(golem.headSpinAnimation, CopperGolemAnimations.HEAD_SPIN, ageInTicks);
-    //        this.animate(entity.headSpinSlowerAnimation, CopperGolemAnimations.HEAD_SPIN_SLOWER, animationProgress);
-    //        this.animate(entity.headSpinSlowestAnimation, CopperGolemAnimations.HEAD_SPIN_SLOWEST, animationProgress);
+            this.animate(golem.headSpinAnimation, this.getHeadSpinAnimation(golem), ageInTicks);
 
             this.animate(golem.interactingAnimation, CopperGolemAnimations.BUTTON_PRESS, ageInTicks);
-    //        this.animate(entity.buttonSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS, animationProgress);
-    //        this.animate(entity.buttonSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS, animationProgress);
-
             this.animate(golem.interactingAboveAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, ageInTicks);
-    //        this.animate(entity.buttonUpSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, animationProgress);
-    //        this.animate(entity.buttonUpSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS_UP, animationProgress);
-
             this.animate(golem.interactingBelowAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, ageInTicks);
-    //        this.animate(entity.buttonDownSlowerAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, animationProgress);
-    //        this.animate(entity.buttonDownSlowestAnimation, CopperGolemAnimations.BUTTON_PRESS_DOWN, animationProgress);
         }
     }
 
@@ -133,5 +123,13 @@ public class CopperGolemModel<T extends AbstractGolem> extends HierarchicalModel
         long accumulatedTime = (long)(limbSwing * 50.0f * speed);
         float scale = Math.min(limbSwingAmount * scaleFactor, 1.0f);
         KeyframeAnimations.animate(this, animationDefinition, accumulatedTime, scale, HierarchicalModelAccessor.animationVectorCache());
+    }
+
+    private AnimationDefinition getHeadSpinAnimation(CopperGolem golem) {
+        return switch (golem.getWeatherState()) {
+            case EXPOSED -> CopperGolemAnimations.HEAD_SPIN_SLOWER;
+            case WEATHERED -> CopperGolemAnimations.HEAD_SPIN_SLOWEST;
+            default -> CopperGolemAnimations.HEAD_SPIN;
+        };
     }
 }
