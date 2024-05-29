@@ -57,9 +57,9 @@ public class OxidizedCopperGolem extends AbstractGolem {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 30.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.0D)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
+            .add(Attributes.MAX_HEALTH, 30.0D)
+            .add(Attributes.MOVEMENT_SPEED, 0.0D)
+            .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
 
     // ========== DATA CONTROL =========================================================================================

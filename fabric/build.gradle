@@ -2,22 +2,29 @@ plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
-architectury {
-    platformSetupLoomIde()
-    fabric()
-}
-
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
+
+    runs {
+        datagen {
+            inherit client
+
+            name "Data Generation"
+
+            vmArg "-Dfabric-api.datagen"
+            vmArg "-Dfabric-api.datagen.output-dir=${project(":common").file(project.output_datagen)}"
+            vmArg "-Dfabric-api.datagen.modid=unvotedandshelved"
+
+            runDir "build/datagen"
+        }
+    }
 }
 
 sourceSets.main.resources.srcDirs += project(":common").file(project.output_datagen)
 
-sourceSets {
-    datagen {
-        compileClasspath += main.compileClasspath
-        runtimeClasspath += main.runtimeClasspath
-    }
+architectury {
+    platformSetupLoomIde()
+    fabric()
 }
 
 configurations {
@@ -32,26 +39,12 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
 
+    modApi "curse.maven:platform-997634:${rootProject.fabric_platform_version}"
+
     include modImplementation("com.jamieswhiteshirt:reach-entity-attributes:${rootProject.reach_entity_attributes_version}")
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
-}
-
-loom {
-    runs {
-        datagen {
-            name "Data Generation"
-
-            server()
-            source sourceSets.datagen
-
-            vmArg "-Dfabric-api.datagen"
-            vmArg "-Dfabric-api.datagen.output-dir=${project(":common").file(project.output_datagen)}"
-
-            runDir "build/datagen"
-        }
-    }
 }
 
 processResources {
@@ -63,20 +56,19 @@ processResources {
 }
 
 shadowJar {
-    exclude "architectury.common.json"
-
     configurations = [project.configurations.shadowCommon]
-    classifier "dev-shadow"
+    archiveClassifier = "dev-shadow"
 }
 
 remapJar {
-    input.set shadowJar.archiveFile
+    injectAccessWidener = true
+    inputFile.set(shadowJar.archiveFile)
     dependsOn shadowJar
-    classifier null
+    archiveClassifier = null
 }
 
 jar {
-    classifier "dev"
+    archiveClassifier.set("dev")
 }
 
 sourcesJar {
@@ -100,6 +92,8 @@ publishing {
         }
     }
 
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
+        // Add repositories to publish to here.
     }
 }

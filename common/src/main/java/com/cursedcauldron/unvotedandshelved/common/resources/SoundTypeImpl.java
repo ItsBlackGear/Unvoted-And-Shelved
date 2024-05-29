@@ -16,7 +16,6 @@ public class SoundTypeImpl extends SoundType {
         this(1.0F, 1.0F, breakSound, stepSound, placeSound, hitSound, fallSound);
     }
 
-    @SuppressWarnings("DataFlowIssue")
     public SoundTypeImpl(float volume, float pitch, Supplier<SoundEvent> breakSound, Supplier<SoundEvent> stepSound, Supplier<SoundEvent> placeSound, Supplier<SoundEvent> hitSound, Supplier<SoundEvent> fallSound) {
         super(volume, pitch, null, null, null, null, null);
         this.breakSound = breakSound;

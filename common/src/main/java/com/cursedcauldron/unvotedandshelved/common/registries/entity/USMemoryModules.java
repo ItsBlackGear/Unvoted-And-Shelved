@@ -1,7 +1,7 @@
 package com.cursedcauldron.unvotedandshelved.common.registries.entity;
 
+import com.blackgear.platform.core.CoreRegistry;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
-import com.cursedcauldron.unvotedandshelved.core.platform.CoreRegistry;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;

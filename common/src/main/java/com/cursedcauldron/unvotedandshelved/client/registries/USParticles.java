@@ -1,8 +1,8 @@
 package com.cursedcauldron.unvotedandshelved.client.registries;
 
+import com.blackgear.platform.core.CoreRegistry;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.core.mixin.access.SimpleParticleTypeAccessor;
-import com.cursedcauldron.unvotedandshelved.core.platform.CoreRegistry;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;

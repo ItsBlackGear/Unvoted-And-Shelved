@@ -27,7 +27,7 @@ public class TrackDarkness extends Behavior<Glare> {
 
     public TrackDarkness(int range, float speed) {
         super(ImmutableMap.of(
-                MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_PRESENT
+            MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_PRESENT
         ));
         this.range = range;
         this.speed = speed;

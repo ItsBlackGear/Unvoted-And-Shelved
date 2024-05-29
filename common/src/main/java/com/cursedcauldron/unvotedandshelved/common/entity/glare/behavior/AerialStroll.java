@@ -37,6 +37,7 @@ public class AerialStroll extends RandomStroll {
     private Vec3 findAerialStrollPosition(PathfinderMob mob) {
         Vec3 viewVector = mob.getViewVector(0.0F);
         Vec3 aerialPosition = HoverRandomPos.getPos(mob, 8, 7, viewVector.x, viewVector.z, (float)Math.PI / 2, 3, 1);
+        
         if (aerialPosition != null) {
             BlockPos foundPosition = new BlockPos(aerialPosition);
             if (mob.level.getBlockState(foundPosition).isPathfindable(mob.level, mob.getOnPos(), PathComputationType.LAND)) {

@@ -38,8 +38,9 @@ public class GlowberryDustBlock extends Block implements SimpleWaterloggedBlock 
     public GlowberryDustBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(
-                this.getStateDefinition().any()
-                        .setValue(WATERLOGGED, false)
+            this.getStateDefinition()
+                .any()
+                .setValue(WATERLOGGED, false)
         );
     }
 

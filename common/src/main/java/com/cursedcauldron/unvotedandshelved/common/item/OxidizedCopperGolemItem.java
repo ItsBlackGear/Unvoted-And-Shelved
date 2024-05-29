@@ -9,7 +9,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -26,35 +25,49 @@ public class OxidizedCopperGolemItem extends Item {
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext useOnContext) {
-        Direction direction = useOnContext.getClickedFace();
+    public InteractionResult useOn(UseOnContext context) {
+        Direction direction = context.getClickedFace();
+        
         if (direction == Direction.DOWN) {
             return InteractionResult.FAIL;
         } else {
-            Level level = useOnContext.getLevel();
-            BlockPlaceContext blockPlaceContext = new BlockPlaceContext(useOnContext);
-            BlockPos blockPos = blockPlaceContext.getClickedPos();
-            ItemStack itemStack = useOnContext.getItemInHand();
-            Vec3 vec3 = Vec3.atBottomCenterOf(blockPos);
-            AABB aABB = EntityType.ARMOR_STAND.getDimensions().makeBoundingBox(vec3.x(), vec3.y(), vec3.z());
-            if (level.noCollision(null, aABB) && level.getEntities(null, aABB).isEmpty()) {
-                if (level instanceof ServerLevel serverLevel) {
-                    OxidizedCopperGolem armorStand = USEntities.OXIDIZED_COPPER_GOLEM.get().create(serverLevel, itemStack.getTag(), null, useOnContext.getPlayer(), blockPos, MobSpawnType.SPAWN_EGG, true, true);
-                    if (armorStand == null) {
+            Level level = context.getLevel();
+            BlockPlaceContext placeContext = new BlockPlaceContext(context);
+            BlockPos pos = placeContext.getClickedPos();
+            ItemStack stack = context.getItemInHand();
+            Vec3 position = Vec3.atBottomCenterOf(pos);
+            AABB boundingBox = USEntities.OXIDIZED_COPPER_GOLEM.get().getDimensions().makeBoundingBox(position.x(), position.y(), position.z());
+            
+            if (level.noCollision(null, boundingBox) && level.getEntities(null, boundingBox).isEmpty()) {
+                if (level instanceof ServerLevel server) {
+                    OxidizedCopperGolem golem = USEntities.OXIDIZED_COPPER_GOLEM.get().create(
+                        server,
+                        stack.getTag(),
+                        null,
+                        context.getPlayer(),
+                        pos,
+                        MobSpawnType.SPAWN_EGG,
+                        true,
+                        true
+                    );
+                    
+                    if (golem == null) {
                         return InteractionResult.FAIL;
                     }
 
-                    float f = (float) Mth.floor((Mth.wrapDegrees(useOnContext.getRotation() - 180.0F) + 22.5F) / 45.0F) * 45.0F;
-                    armorStand.moveTo(armorStand.getX(), armorStand.getY(), armorStand.getZ(), f, 0.0F);
-                    serverLevel.addFreshEntityWithPassengers(armorStand);
-                    level.playSound(null, armorStand.getX(), armorStand.getY(), armorStand.getZ(), SoundEvents.COPPER_PLACE, SoundSource.BLOCKS, 0.75F, 0.8F);
-                    level.gameEvent(useOnContext.getPlayer(), GameEvent.ENTITY_PLACE, armorStand.position());
-                    if (itemStack.hasCustomHoverName()) {
-                        armorStand.setCustomName(itemStack.getHoverName());
+                    float yRot = (float) Mth.floor((Mth.wrapDegrees(context.getRotation() - 180.0F) + 22.5F) / 45.0F) * 45.0F;
+                    golem.moveTo(golem.getX(), golem.getY(), golem.getZ(), yRot, 0.0F);
+                    server.addFreshEntityWithPassengers(golem);
+                    
+                    level.playSound(null, golem.getX(), golem.getY(), golem.getZ(), SoundEvents.COPPER_PLACE, SoundSource.BLOCKS, 0.75F, 0.8F);
+                    level.gameEvent(context.getPlayer(), GameEvent.ENTITY_PLACE, golem.position());
+                    
+                    if (stack.hasCustomHoverName()) {
+                        golem.setCustomName(stack.getHoverName());
                     }
                 }
 
-                itemStack.shrink(1);
+                stack.shrink(1);
                 return InteractionResult.sidedSuccess(level.isClientSide);
             } else {
                 return InteractionResult.FAIL;

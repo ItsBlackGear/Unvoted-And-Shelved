@@ -22,8 +22,8 @@ public class SpinHead extends Behavior<CopperGolem> {
 
     public SpinHead() {
         super(ImmutableMap.of(
-                MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT,
-                USMemoryModules.HEAD_SPIN_COOLDOWN_TICKS.get(), MemoryStatus.VALUE_ABSENT
+            MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT,
+            USMemoryModules.HEAD_SPIN_COOLDOWN_TICKS.get(), MemoryStatus.VALUE_ABSENT
         ));
     }
 

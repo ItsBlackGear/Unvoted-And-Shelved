@@ -2,8 +2,8 @@ package com.cursedcauldron.unvotedandshelved.common.entity.coppergolem;
 
 import com.cursedcauldron.unvotedandshelved.common.entity.USPoses;
 import com.cursedcauldron.unvotedandshelved.common.registries.USSoundEvents;
-import com.cursedcauldron.unvotedandshelved.common.registries.entity.USDataSerializers;
 import com.cursedcauldron.unvotedandshelved.common.registries.entity.USEntities;
+import com.cursedcauldron.unvotedandshelved.core.registry.ModEntityDataSerializers;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -45,7 +45,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class CopperGolem extends AbstractGolem {
     // ENTITY DATA
-    public static final EntityDataAccessor<WeatherState> DATA_WEATHER_STATE = SynchedEntityData.defineId(CopperGolem.class, USDataSerializers.WEATHER_STATE);
+    public static final EntityDataAccessor<WeatherState> DATA_WEATHER_STATE = SynchedEntityData.defineId(CopperGolem.class, ModEntityDataSerializers.WEATHER_STATE);
     public static final EntityDataAccessor<Boolean> DATA_IS_WAXED = SynchedEntityData.defineId(CopperGolem.class, EntityDataSerializers.BOOLEAN);
 
     // ENTITY EVENTS
@@ -64,9 +64,9 @@ public class CopperGolem extends AbstractGolem {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 30.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.0D)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
+            .add(Attributes.MAX_HEALTH, 30.0D)
+            .add(Attributes.MOVEMENT_SPEED, 0.0D)
+            .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D);
     }
 
     // ========== DATA CONTROL =========================================================================================
@@ -189,9 +189,9 @@ public class CopperGolem extends AbstractGolem {
     }
 
     private static void spawnSparklingParticles(Level level, Vec3 pos, IntProvider amount) {
-        int i = amount.sample(level.random);
+        int tries = amount.sample(level.random);
 
-        for (int j = 0; j < i; j++) {
+        for (int i = 0; i < tries; i++) {
             double x = pos.x + Mth.nextDouble(level.random, -1.0, 1.0) * 0.125;
             double y = pos.y + Mth.nextDouble(level.random, 0.75, 1.25) * 0.5;
             double z = pos.z + Mth.nextDouble(level.random, -1.0, 1.0) * 0.125;

@@ -1,8 +1,8 @@
 package com.cursedcauldron.unvotedandshelved.common.registries.entity;
 
+import com.blackgear.platform.core.CoreRegistry;
 import com.cursedcauldron.unvotedandshelved.core.UnvotedAndShelved;
 import com.cursedcauldron.unvotedandshelved.core.mixin.access.ActivityAccessor;
-import com.cursedcauldron.unvotedandshelved.core.platform.CoreRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.world.entity.schedule.Activity;
 

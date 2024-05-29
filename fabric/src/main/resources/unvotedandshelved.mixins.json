@@ -3,7 +3,6 @@
   "package": "com.cursedcauldron.unvotedandshelved.core.mixin.fabric",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "SheetsMixin"
   ],
   "mixins": [
   ],

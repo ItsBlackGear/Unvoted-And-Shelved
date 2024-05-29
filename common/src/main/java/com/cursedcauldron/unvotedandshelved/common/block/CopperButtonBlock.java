@@ -19,20 +19,20 @@ import org.jetbrains.annotations.Nullable;
 public class CopperButtonBlock extends ButtonBlock {
     protected final WeatherState weatherState;
     private static final Object2IntMap<WeatherState> PRESS_DURATION_BY_STATE = Object2IntMaps.unmodifiable(
-            Util.make(new Object2IntLinkedOpenHashMap<>(), map -> {
-                map.put(WeatherState.UNAFFECTED, 20);
-                map.put(WeatherState.EXPOSED, 30);
-                map.put(WeatherState.WEATHERED, 40);
-                map.put(WeatherState.OXIDIZED, 50);
-            })
+        Util.make(new Object2IntLinkedOpenHashMap<>(), map -> {
+            map.put(WeatherState.UNAFFECTED, 20);
+            map.put(WeatherState.EXPOSED, 30);
+            map.put(WeatherState.WEATHERED, 40);
+            map.put(WeatherState.OXIDIZED, 50);
+        })
     );
 
     public CopperButtonBlock(WeatherState weatherState, Properties properties) {
         super(false, properties);
         this.weatherState = weatherState;
         this.registerDefaultState(
-                this.getStateDefinition().any()
-                        .setValue(POWERED, false)
+            this.getStateDefinition().any()
+                .setValue(POWERED, false)
         );
     }
 

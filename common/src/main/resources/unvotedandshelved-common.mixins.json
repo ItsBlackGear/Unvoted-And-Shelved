@@ -6,7 +6,6 @@
     "client.KeyframeAnimationsMixin"
   ],
   "mixins": [
-    "BlockEntityTypeMixin",
     "LightningBoltMixin",
     "PoseMixin",
     "ServerLevelMixin",

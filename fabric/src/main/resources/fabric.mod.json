@@ -2,17 +2,18 @@
   "schemaVersion": 1,
   "id": "unvotedandshelved",
   "version": "${version}",
+
   "name": "Unvoted and Shelved",
   "description": "This is an example description! Tell everyone what your mod is about!",
-  "authors": [
-    "Me!"
-  ],
+  "authors": [],
   "contact": {
     "homepage": "https://fabricmc.net/",
     "sources": "https://github.com/FabricMC/fabric-example-mod"
   },
+
   "license": "Insert License Here",
   "icon": "assets/unvotedandshelved/icon.png",
+
   "environment": "*",
   "entrypoints": {
     "main": [

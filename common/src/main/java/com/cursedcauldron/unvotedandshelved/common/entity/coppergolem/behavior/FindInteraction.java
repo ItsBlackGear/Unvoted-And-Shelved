@@ -40,9 +40,9 @@ public class FindInteraction extends Behavior<CopperGolem> {
 
     public FindInteraction(int searchRadius) {
         super(ImmutableMap.of(
-                MemoryModuleType.HURT_BY, MemoryStatus.VALUE_ABSENT,
-                USMemoryModules.INTERACTION_COOLDOWN_TICKS.get(), MemoryStatus.VALUE_ABSENT,
-                USMemoryModules.INTERACTION_POS.get(), MemoryStatus.VALUE_ABSENT
+            MemoryModuleType.HURT_BY, MemoryStatus.VALUE_ABSENT,
+            USMemoryModules.INTERACTION_COOLDOWN_TICKS.get(), MemoryStatus.VALUE_ABSENT,
+            USMemoryModules.INTERACTION_POS.get(), MemoryStatus.VALUE_ABSENT
         ));
         this.searchRadius = searchRadius;
     }
@@ -110,7 +110,8 @@ public class FindInteraction extends Behavior<CopperGolem> {
      * Calculates the interaction position for the Copper Golem based on a provided path.
      * It moves the Golem to the path and checks if it's near an interactable block.
      */
-    private @Nullable BlockPos calculatePosition(ServerLevel level, CopperGolem golem, BlockPos pos, Path path) {
+    @Nullable
+    private BlockPos calculatePosition(ServerLevel level, CopperGolem golem, BlockPos pos, Path path) {
         // Move the golem to the path and check if it's near an interactable block
         golem.getNavigation().moveTo(path, 0.4);
         BlockState state = level.getBlockState(pos);
@@ -163,8 +164,8 @@ public class FindInteraction extends Behavior<CopperGolem> {
      * current interaction location and cooldown.
      */
     private boolean hasNoInteractionMemory(CopperGolem golem) {
-        return golem.getBrain().getMemory(USMemoryModules.INTERACTION_POS.get()).isEmpty() &&
-                golem.getBrain().getMemory(USMemoryModules.INTERACTION_COOLDOWN_TICKS.get()).isEmpty();
+        return golem.getBrain().getMemory(USMemoryModules.INTERACTION_POS.get()).isEmpty()
+            && golem.getBrain().getMemory(USMemoryModules.INTERACTION_COOLDOWN_TICKS.get()).isEmpty();
     }
 
     /**

@@ -17,6 +17,7 @@ public class GlowberryDustBottleItem extends BlockItem {
     public InteractionResult place(BlockPlaceContext context) {
         InteractionResult result = super.place(context);
         Player player = context.getPlayer();
+        
         if (result.consumesAction() && player != null && !player.isCreative()) {
             player.addItem(new ItemStack(Items.GLASS_BOTTLE));
         }

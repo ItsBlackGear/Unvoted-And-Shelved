@@ -13,7 +13,7 @@ public class EntityTagGenerator extends FabricTagProvider.EntityTypeTagProvider 
     @Override
     protected void generateTags() {
         this.tag(USEntityTypeTags.REACHABLE_BY_LIGHTNING)
-                .add(USEntities.COPPER_GOLEM.get())
-                .add(USEntities.OXIDIZED_COPPER_GOLEM.get());
+            .add(USEntities.COPPER_GOLEM.get())
+            .add(USEntities.OXIDIZED_COPPER_GOLEM.get());
     }
 }

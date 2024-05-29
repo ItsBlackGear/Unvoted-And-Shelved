@@ -34,8 +34,8 @@ public class TriggerInteraction extends Behavior<CopperGolem> {
 
     public TriggerInteraction() {
         super(ImmutableMap.of(
-                USMemoryModules.INTERACTION_POS.get(), MemoryStatus.VALUE_PRESENT,
-                MemoryModuleType.LOOK_TARGET, MemoryStatus.REGISTERED
+            USMemoryModules.INTERACTION_POS.get(), MemoryStatus.VALUE_PRESENT,
+            MemoryModuleType.LOOK_TARGET, MemoryStatus.REGISTERED
         ));
     }
 

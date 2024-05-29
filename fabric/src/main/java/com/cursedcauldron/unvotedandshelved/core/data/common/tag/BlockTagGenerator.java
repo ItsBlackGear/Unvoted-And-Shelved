@@ -15,34 +15,30 @@ public class BlockTagGenerator extends FabricTagProvider.BlockTagProvider {
     @Override
     protected void generateTags() {
         this.tag(BlockTags.BUTTONS)
-                .addTag(USBlockTags.COPPER_BUTTONS);
+            .addTag(USBlockTags.COPPER_BUTTONS);
         this.tag(USBlockTags.COPPER_BUTTONS)
-                .add(
-                        USBlocks.COPPER_BUTTON.get(),
-                        USBlocks.EXPOSED_COPPER_BUTTON.get(),
-                        USBlocks.WEATHERED_COPPER_BUTTON.get(),
-                        USBlocks.OXIDIZED_COPPER_BUTTON.get(),
-                        USBlocks.WAXED_COPPER_BUTTON.get(),
-                        USBlocks.WAXED_EXPOSED_COPPER_BUTTON.get(),
-                        USBlocks.WAXED_WEATHERED_COPPER_BUTTON.get(),
-                        USBlocks.WAXED_OXIDIZED_COPPER_BUTTON.get()
-                );
+            .add(USBlocks.COPPER_BUTTON.get())
+            .add(USBlocks.EXPOSED_COPPER_BUTTON.get())
+            .add(USBlocks.WEATHERED_COPPER_BUTTON.get())
+            .add(USBlocks.OXIDIZED_COPPER_BUTTON.get())
+            .add(USBlocks.WAXED_COPPER_BUTTON.get())
+            .add(USBlocks.WAXED_EXPOSED_COPPER_BUTTON.get())
+            .add(USBlocks.WAXED_WEATHERED_COPPER_BUTTON.get())
+            .add(USBlocks.WAXED_OXIDIZED_COPPER_BUTTON.get());
         this.tag(USBlockTags.COPPER_GOLEM_INTERACTABLES)
-                .addTag(BlockTags.BUTTONS)
-                .add(Blocks.LEVER);
+            .addTag(BlockTags.BUTTONS)
+            .add(Blocks.LEVER);
         this.tag(USBlockTags.COPPER_PILLARS)
-                .add(
-                        USBlocks.COPPER_PILLAR.get(),
-                        USBlocks.EXPOSED_COPPER_PILLAR.get(),
-                        USBlocks.WEATHERED_COPPER_PILLAR.get(),
-                        USBlocks.OXIDIZED_COPPER_PILLAR.get(),
-                        USBlocks.WAXED_COPPER_PILLAR.get(),
-                        USBlocks.WAXED_EXPOSED_COPPER_PILLAR.get(),
-                        USBlocks.WAXED_WEATHERED_COPPER_PILLAR.get(),
-                        USBlocks.WAXED_OXIDIZED_COPPER_PILLAR.get()
-                );
+            .add(USBlocks.COPPER_PILLAR.get())
+            .add(USBlocks.EXPOSED_COPPER_PILLAR.get())
+            .add(USBlocks.WEATHERED_COPPER_PILLAR.get())
+            .add(USBlocks.OXIDIZED_COPPER_PILLAR.get())
+            .add(USBlocks.WAXED_COPPER_PILLAR.get())
+            .add(USBlocks.WAXED_EXPOSED_COPPER_PILLAR.get())
+            .add(USBlocks.WAXED_WEATHERED_COPPER_PILLAR.get())
+            .add(USBlocks.WAXED_OXIDIZED_COPPER_PILLAR.get());
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .addTag(USBlockTags.COPPER_BUTTONS)
-                .addTag(USBlockTags.COPPER_PILLARS);
+            .addTag(USBlockTags.COPPER_BUTTONS)
+            .addTag(USBlockTags.COPPER_PILLARS);
     }
 }

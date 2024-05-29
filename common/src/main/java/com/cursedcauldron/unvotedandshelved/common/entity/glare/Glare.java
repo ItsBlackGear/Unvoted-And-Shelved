@@ -76,10 +76,10 @@ public class Glare extends AgeableMob implements FlyingAnimal {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 16.0)
-                .add(Attributes.FLYING_SPEED, 0.6)
-                .add(Attributes.MOVEMENT_SPEED, 0.3)
-                .add(Attributes.FOLLOW_RANGE, 48.0);
+            .add(Attributes.MAX_HEALTH, 16.0)
+            .add(Attributes.FLYING_SPEED, 0.6)
+            .add(Attributes.MOVEMENT_SPEED, 0.3)
+            .add(Attributes.FOLLOW_RANGE, 48.0);
     }
 
     // ========== DATA CONTROL =========================================================================================
